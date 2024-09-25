@@ -370,7 +370,7 @@
             font-size: 24px;
             cursor: pointer;
         }
-        .play-music-button {
+        .play-music-button, .pause-music-button {
             background-color: #8e44ad;
             color: #fff;
             border: none;
@@ -379,8 +379,9 @@
             cursor: pointer;
             font-size: 14px;
             margin-top: 8px;
+            margin-right: 8px;
         }
-        .play-music-button:hover {
+        .play-music-button:hover, .pause-music-button:hover {
             background-color: #6c3483;
         }
     </style>
@@ -552,7 +553,8 @@
         const sendMessage = document.getElementById('send-message');
         const chatMessages = document.getElementById('chat-messages');
         const backButton = document.getElementById('back-button');
-        const replyContainer = document.getElementById('reply-container');
+        const replyContainer =
+document.getElementById('reply-container');
         const replyText = document.getElementById('reply-text');
         const cancelReply = document.getElementById('cancel-reply');
         const musicButton = document.getElementById('music-button');
@@ -561,26 +563,22 @@
         const youtubeSearchResults = document.getElementById('youtube-search-results');
         const closeYoutubeSearch = document.getElementById('close-youtube-search');
 
-        let currentRoom = null;
+        let currentRoom = 'GLOBAL';
         let username = '';
-        const rooms = {};
+        const rooms = {
+            GLOBAL: {
+                messages: [],
+                createdAt: Date.now(),
+                users: [],
+                currentSong: null
+            }
+        };
         let replyingTo = null;
         let player;
         let isYouTubeApiReady = false;
 
         function generateRoomCode() {
             return Math.random().toString(36).substring(2, 8).toUpperCase();
-        }
-
-        function createRoom() {
-            const roomCode = generateRoomCode();
-            rooms[roomCode] = {
-                messages: [],
-                createdAt: Date.now(),
-                users: [],
-                currentSong: null
-            };
-            return roomCode;
         }
 
         function joinRoom(roomCode) {
@@ -613,8 +611,7 @@
         function handleSearch() {
             const query = searchInput.value.trim().toUpperCase();
             if (query === 'GOOGLE') {
-                const roomCode = createRoom();
-                activateSecretMode(roomCode);
+                activateSecretMode('GLOBAL');
             } else if (query.length === 6 && rooms[query]) {
                 activateSecretMode(query);
             }
@@ -705,15 +702,6 @@
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
-        function cleanupRooms() {
-            const now = Date.now();
-            Object.keys(rooms).forEach(roomCode => {
-                if (now - rooms[roomCode].createdAt > 24 * 60 * 60 * 1000) {
-                    delete rooms[roomCode];
-                }
-            });
-        }
-
         searchButton.addEventListener('click', handleSearch);
         searchInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
@@ -754,7 +742,7 @@
         backButton.addEventListener('click', () => {
             secretMode.style.display = 'none';
             searchInput.value = '';
-            currentRoom = null;
+            currentRoom = 'GLOBAL';
             username = '';
         });
 
@@ -820,13 +808,22 @@
             };
             youtubeSearchContainer.style.display = 'none';
             addSystemMessage(`${username} requested to play: ${video.snippet.title}`);
-            addSystemMessage(`<button class="play-music-button" data-video-id="${video.id.videoId}">🎶 Tap to play "${video.snippet.title}"</button>`);
+            addSystemMessage(`
+                <button class="play-music-button" data-video-id="${video.id.videoId}">▶️ Play "${video.snippet.title}"</button>
+                <button class="pause-music-button" data-video-id="${video.id.videoId}" style="display:none;">⏸️ Pause</button>
+            `);
         }
 
         chatMessages.addEventListener('click', (e) => {
             if (e.target.classList.contains('play-music-button')) {
                 const videoId = e.target.getAttribute('data-video-id');
                 playYouTubeVideo(videoId);
+                e.target.style.display = 'none';
+                e.target.nextElementSibling.style.display = 'inline-block';
+            } else if (e.target.classList.contains('pause-music-button')) {
+                pauseYouTubeVideo();
+                e.target.style.display = 'none';
+                e.target.previousElementSibling.style.display = 'inline-block';
             }
         });
 
@@ -882,7 +879,13 @@
             }
         }
 
-        setInterval(cleanupRooms, 60000); // Clean up rooms every minute
+        function pauseYouTubeVideo() {
+            if (isYouTubeApiReady && player && player.pauseVideo) {
+                player.pauseVideo();
+            } else {
+                console.error('YouTube player not ready');
+            }
+        }
     </script>
 </body>
 </html>
