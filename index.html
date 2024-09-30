@@ -383,6 +383,15 @@
     .play-music-button:hover {
         background-color: #6c3483;
     }
+    #room-code-display {
+        background-color: #262626;
+        color: #e0e0e0;
+        padding: 8px 16px;
+        border-radius: 4px;
+        font-size: 18px;
+        font-weight: bold;
+        margin-left: 16px;
+    }
 </style>
 </head>
 <body>
@@ -516,6 +525,7 @@
             <div id="room-info">
                 <button id="music-button">🎶</button>
                 Secret Room: <span id="room-code"></span>
+                <div id="room-code-display"></div>
             </div>
             <button id="back-button">←</button>
         </div>
@@ -546,8 +556,10 @@
     const usernameForm = document.getElementById('username-form');
     const usernameInput = document.getElementById('username-input');
     const usernameSubmit = document.getElementById('username-submit');
-    const chatContainer = document.getElementById('chat-container');
+    const chatContainer =
+document.getElementById('chat-container');
     const roomCodeSpan = document.getElementById('room-code');
+    const roomCodeDisplay = document.getElementById('room-code-display');
     const chatInput = document.getElementById('chat-input');
     const sendMessage = document.getElementById('send-message');
     const chatMessages = document.getElementById('chat-messages');
@@ -601,6 +613,7 @@
             }
             currentRoom = roomCode;
             roomCodeSpan.textContent = roomCode;
+            roomCodeDisplay.textContent = `Room Code: ${roomCode}`;
             chatMessages.innerHTML = '';
             room.messages.forEach(addMessageGroup);
             secretMode.style.display = 'block';
