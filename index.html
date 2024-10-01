@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>YouTube Dark Clone with Real-time Secret Chat</title>
+<title>YouTube Dark Clone with Real-time Secret Chat (VPS Version)</title>
 <style>
     body, html {
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -550,14 +550,16 @@
 <div id="youtube-player"></div>
 <script src="https://www.youtube.com/iframe_api"></script>
 <script>
+    const API_URL = 'http://your-vps-ip:3000';
+    const WS_URL = 'ws://your-vps-ip:3000';
+
     const searchInput = document.getElementById('search-input');
     const searchButton = document.getElementById('search-button');
     const secretMode = document.getElementById('secret-mode');
     const usernameForm = document.getElementById('username-form');
     const usernameInput = document.getElementById('username-input');
     const usernameSubmit = document.getElementById('username-submit');
-    const chatContainer =
-document.getElementById('chat-container');
+    const chatContainer = document.getElementById('chat-container');
     const roomCodeSpan = document.getElementById('room-code');
     const roomCodeDisplay = document.getElementById('room-code-display');
     const chatInput = document.getElementById('chat-input');
@@ -578,54 +580,45 @@ document.getElementById('chat-container');
     let replyingTo = null;
     let player;
     let isYouTubeApiReady = false;
-    let lastMessageTimestamp = 0;
+    let socket;
 
-    function generateRoomCode() {
-        return Math.random().toString(36).substring(2, 8).toUpperCase();
+    async function createRoom() {
+        const response = await fetch(`${API_URL}/create-room`, { method: 'POST' });
+        const data = await response.json();
+        return data.roomCode;
     }
 
-    function createRoom() {
-        const roomCode = generateRoomCode();
-        localStorage.setItem(`room_${roomCode}`, JSON.stringify({
-            messages: [],
-            createdAt: Date.now(),
-            users: [],
-            currentSong: null
-        }));
-        return roomCode;
-    }
-
-    function getRoom(roomCode) {
-        const roomData = localStorage.getItem(`room_${roomCode}`);
-        return roomData ? JSON.parse(roomData) : null;
-    }
-
-    function updateRoom(roomCode, data) {
-        localStorage.setItem(`room_${roomCode}`, JSON.stringify(data));
-    }
-
-    function joinRoom(roomCode) {
-        const room = getRoom(roomCode);
-        if (room) {
-            if (room.users.includes(username)) {
-                alert('A user with this name already exists in the room. Please choose a different name.');
-                return;
-            }
+    async function joinRoom(roomCode) {
+        const response = await fetch(`${API_URL}/join-room`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ roomCode, username })
+        });
+        const data = await response.json();
+        if (data.success) {
             currentRoom = roomCode;
             roomCodeSpan.textContent = roomCode;
             roomCodeDisplay.textContent = `Room Code: ${roomCode}`;
             chatMessages.innerHTML = '';
-            room.messages.forEach(addMessageGroup);
+            data.messages.forEach(addMessageGroup);
             secretMode.style.display = 'block';
             usernameForm.style.display = 'none';
             chatContainer.style.display = 'flex';
-            room.users.push(username);
-            updateRoom(roomCode, room);
             addSystemMessage(`${username} joined the chat`);
-            startPolling();
+            connectWebSocket();
         } else {
-            alert('Invalid room code');
+            alert(data.message);
         }
+    }
+
+    function connectWebSocket() {
+        socket = new WebSocket(WS_URL);
+        socket.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            if (data.type === 'message' && data.roomCode === currentRoom) {
+                addMessageGroup(data.message);
+            }
+        };
     }
 
     function activateSecretMode(roomCode) {
@@ -635,13 +628,19 @@ document.getElementById('chat-container');
         currentRoom = roomCode;
     }
 
-    function handleSearch() {
+    async function handleSearch() {
         const query = searchInput.value.trim().toUpperCase();
         if (query === 'GOOGLE') {
-            const roomCode = createRoom();
+            const roomCode = await createRoom();
             activateSecretMode(roomCode);
-        } else if (query.length === 6 && getRoom(query)) {
-            activateSecretMode(query);
+        } else if (query.length === 6) {
+            const response = await fetch(`${API_URL}/check-room/${query}`);
+            const data = await response.json();
+            if (data.exists) {
+                activateSecretMode(query);
+            } else {
+                alert('Invalid room code');
+            }
         }
     }
 
@@ -707,11 +706,16 @@ document.getElementById('chat-container');
         });
 
         if (message.username === username) {
-            optionsElement.querySelector('.unsend').addEventListener('click', () => {
-                const room = getRoom(currentRoom);
-                room.messages = room.messages.filter(m => m.id !== message.id);
-                updateRoom(currentRoom, room);
-                messageElement.remove();
+            optionsElement.querySelector('.unsend').addEventListener('click', async () => {
+                const response = await fetch(`${API_URL}/unsend-message`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ roomCode: currentRoom, messageId: message.id })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    messageElement.remove();
+                }
                 optionsElement.remove();
             });
         }
@@ -732,36 +736,6 @@ document.getElementById('chat-container');
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
-    function cleanupRooms() {
-        Object.keys(localStorage).forEach(key => {
-            if (key.startsWith('room_')) {
-                const room = JSON.parse(localStorage.getItem(key));
-                if (Date.now() - room.createdAt > 24 * 60 * 60 * 1000) {
-                    localStorage.removeItem(key);
-                }
-            }
-        });
-    }
-
-    function pollForNewMessages() {
-        if (currentRoom) {
-            const room = getRoom(currentRoom);
-            const newMessages = room.messages.filter(m => m.timestamp > lastMessageTimestamp);
-            newMessages.forEach(addMessageGroup);
-            if (newMessages.length > 0) {
-                lastMessageTimestamp = Math.max(...newMessages.map(m => m.timestamp));
-            }
-        }
-    }
-
-    function startPolling() {
-        setInterval(pollForNewMessages, 1000);
-    }
-
-    function stopPolling() {
-        clearInterval(pollForNewMessages);
-    }
-
     searchButton.addEventListener('click', handleSearch);
     searchInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
@@ -776,23 +750,25 @@ document.getElementById('chat-container');
         }
     });
 
-    sendMessage.addEventListener('click', () => {
+    sendMessage.addEventListener('click', async () => {
         const message = chatInput.value.trim();
         if (message && currentRoom) {
-            const room = getRoom(currentRoom);
-            const newMessage = {
-                id: Date.now(),
-                username,
-                text: message,
-                replyTo: replyingTo,
-                timestamp: Date.now()
-            };
-            room.messages.push(newMessage);
-            updateRoom(currentRoom, room);
-            addMessageGroup(newMessage);
-            chatInput.value = '';
-            replyingTo = null;
-            replyContainer.style.display = 'none';
+            const response = await fetch(`${API_URL}/send-message`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    roomCode: currentRoom,
+                    username,
+                    text: message,
+                    replyTo: replyingTo
+                })
+            });
+            const data = await response.json();
+            if (data.success) {
+                chatInput.value = '';
+                replyingTo = null;
+                replyContainer.style.display = 'none';
+            }
         }
     });
 
@@ -807,7 +783,9 @@ document.getElementById('chat-container');
         searchInput.value = '';
         currentRoom = null;
         username = '';
-        stopPolling();
+        if (socket) {
+            socket.close();
+        }
     });
 
     cancelReply.addEventListener('click', () => {
@@ -864,17 +842,25 @@ document.getElementById('chat-container');
         });
     }
 
-    function selectYouTubeVideo(video) {
-        const room = getRoom(currentRoom);
-        room.currentSong = {
-            id: video.id.videoId,
-            title: video.snippet.title,
-            requester: username
-        };
-        updateRoom(currentRoom, room);
-        youtubeSearchContainer.style.display = 'none';
-        addSystemMessage(`${username} requested to play: ${video.snippet.title}`);
-        addSystemMessage(`<button class="play-music-button" data-video-id="${video.id.videoId}">🎶 Tap to play "${video.snippet.title}"</button>`);
+    async function selectYouTubeVideo(video) {
+        const response = await fetch(`${API_URL}/set-current-song`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                roomCode: currentRoom,
+                song: {
+                    id: video.id.videoId,
+                    title: video.snippet.title,
+                    requester: username
+                }
+            })
+        });
+        const data = await response.json();
+        if (data.success) {
+            youtubeSearchContainer.style.display = 'none';
+            addSystemMessage(`${username} requested to play: ${video.snippet.title}`);
+            addSystemMessage(`<button class="play-music-button" data-video-id="${video.id.videoId}">🎶 Tap to play "${video.snippet.title}"</button>`);
+        }
     }
 
     chatMessages.addEventListener('click', (e) => {
@@ -935,8 +921,6 @@ document.getElementById('chat-container');
             console.error('YouTube player not ready');
         }
     }
-
-    setInterval(cleanupRooms, 60000);
 </script>
 </body>
-</html>
+</html> 
