@@ -582,6 +582,22 @@ let player;
 let isYouTubeApiReady = false;
 let socket;
 
+async function performHandshake() {
+    try {
+        console.log('Handshake sent');
+        const response = await fetch(`${API_URL}/handshake`);
+        const data = await response.json();
+        if (data.status === 'online') {
+            console.log('Handshake received');
+            return true;
+        }
+        return false;
+    } catch (error) {
+        console.error('Handshake failed:', error);
+        return false;
+    }
+}
+
 async function createRoom() {
     try {
         const response = await fetch(`${API_URL}/create-room`, { method: 'POST' });
@@ -964,6 +980,16 @@ function playYouTubeVideo(videoId) {
         console.error('YouTube player not ready');
     }
 }
+
+window.addEventListener('load', async () => {
+    const isServerOnline = await performHandshake();
+    if (isServerOnline) {
+        console.log('Server is online');
+    } else {
+        console.error('Server is offline');
+        alert('Unable to connect to the server. Please try again later.');
+    }
+});
 </script>
 </body>
 </html>
