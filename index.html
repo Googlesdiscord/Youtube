@@ -583,31 +583,45 @@ let isYouTubeApiReady = false;
 let socket;
 
 async function createRoom() {
-    const response = await fetch(`${API_URL}/create-room`, { method: 'POST' });
-    const data = await response.json();
-    return data.roomCode;
+    try {
+        const response = await fetch(`${API_URL}/create-room`, { method: 'POST' });
+        if (!response.ok) {
+            throw new Error('Failed to create room');
+        }
+        const data = await response.json();
+        return data.roomCode;
+    } catch (error) {
+        console.error('Error creating room:', error);
+        alert('Failed to create room. Please try again.');
+        return null;
+    }
 }
 
 async function joinRoom(roomCode) {
-    const response = await fetch(`${API_URL}/join-room`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ roomCode, username })
-    });
-    const data = await response.json();
-    if (data.success) {
-        currentRoom = roomCode;
-        roomCodeSpan.textContent = roomCode;
-        roomCodeDisplay.textContent = `Room Code: ${roomCode}`;
-        chatMessages.innerHTML = '';
-        data.messages.forEach(addMessageGroup);
-        secretMode.style.display = 'block';
-        usernameForm.style.display = 'none';
-        chatContainer.style.display = 'flex';
-        addSystemMessage(`${username} joined the chat`);
-        connectWebSocket();
-    } else {
-        alert(data.message);
+    try {
+        const response = await fetch(`${API_URL}/join-room`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ roomCode, username })
+        });
+        const data = await response.json();
+        if (data.success) {
+            currentRoom = roomCode;
+            roomCodeSpan.textContent = roomCode;
+            roomCodeDisplay.textContent = `Room Code: ${roomCode}`;
+            chatMessages.innerHTML = '';
+            data.messages.forEach(addMessageGroup);
+            secretMode.style.display = 'block';
+            usernameForm.style.display = 'none';
+            chatContainer.style.display = 'flex';
+            addSystemMessage(`${username} joined the chat`);
+            connectWebSocket();
+        } else {
+            alert(data.message);
+        }
+    } catch (error) {
+        console.error('Error joining room:', error);
+        alert('Failed to join room. Please try again.');
     }
 }
 
@@ -640,14 +654,21 @@ async function handleSearch() {
     const query = searchInput.value.trim().toUpperCase();
     if (query === 'GOOGLE') {
         const roomCode = await createRoom();
-        activateSecretMode(roomCode);
+        if (roomCode) {
+            activateSecretMode(roomCode);
+        }
     } else if (query.length === 6) {
-        const response = await fetch(`${API_URL}/check-room/${query}`);
-        const data = await response.json();
-        if (data.exists) {
-            activateSecretMode(query);
-        } else {
-            alert('Invalid room code');
+        try {
+            const response = await fetch(`${API_URL}/check-room/${query}`);
+            const data = await response.json();
+            if (data.exists) {
+                activateSecretMode(query);
+            } else {
+                alert('Invalid room code');
+            }
+        } catch (error) {
+            console.error('Error checking room:', error);
+            alert('Failed to check room. Please try again.');
         }
     }
 }
@@ -715,14 +736,18 @@ function showMessageOptions(messageElement, message) {
 
     if (message.username === username) {
         optionsElement.querySelector('.unsend').addEventListener('click', async () => {
-            const response = await fetch(`${API_URL}/unsend-message`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ roomCode: currentRoom, messageId: message.id })
-            });
-            const data = await response.json();
-            if (data.success) {
-                messageElement.remove();
+            try {
+                const response = await fetch(`${API_URL}/unsend-message`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ roomCode: currentRoom, messageId: message.id })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    messageElement.remove();
+                }
+            } catch (error) {
+                console.error('Error unsending message:', error);
             }
             optionsElement.remove();
         });
@@ -761,21 +786,26 @@ usernameSubmit.addEventListener('click', () => {
 sendMessage.addEventListener('click', async () => {
     const message = chatInput.value.trim();
     if (message && currentRoom) {
-        const response = await fetch(`${API_URL}/send-message`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                roomCode: currentRoom,
-                username,
-                text: message,
-                replyTo: replyingTo
-            })
-        });
-        const data = await response.json();
-        if (data.success) {
-            chatInput.value = '';
-            replyingTo = null;
-            replyContainer.style.display = 'none';
+        try {
+            const response = await fetch(`${API_URL}/send-message`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    roomCode: currentRoom,
+                    username,
+                    text: message,
+                    replyTo: replyingTo
+                })
+            });
+            const data = await response.json();
+            if (data.success) {
+                chatInput.value = '';
+                replyingTo = null;
+                replyContainer.style.display = 'none';
+            }
+        } catch (error) {
+            console.error('Error sending message:', error);
+            alert('Failed to send message. Please try again.');
         }
     }
 });
@@ -851,23 +881,28 @@ function displayYouTubeResults(items) {
 }
 
 async function selectYouTubeVideo(video) {
-    const response = await fetch(`${API_URL}/set-current-song`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            roomCode: currentRoom,
-            song: {
-                id: video.id.videoId,
-                title: video.snippet.title,
-                requester: username
-            }
-        })
-    });
-    const data = await response.json();
-    if (data.success) {
-        youtubeSearchContainer.style.display = 'none';
-        addSystemMessage(`${username} requested to play: ${video.snippet.title}`);
-        addSystemMessage(`<button class="play-music-button" data-video-id="${video.id.videoId}">🎶 Tap to play "${video.snippet.title}"</button>`);
+    try {
+        const response = await fetch(`${API_URL}/set-current-song`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                roomCode: currentRoom,
+                song: {
+                    id: video.id.videoId,
+                    title: video.snippet.title,
+                    requester: username
+                }
+            })
+        });
+        const data = await response.json();
+        if (data.success) {
+            youtubeSearchContainer.style.display = 'none';
+            addSystemMessage(`${username} requested to play: ${video.snippet.title}`);
+            addSystemMessage(`<button class="play-music-button" data-video-id="${video.id.videoId}">🎶 Tap to play "${video.snippet.title}"</button>`);
+        }
+    } catch (error) {
+        console.error('Error setting current song:', error);
+        alert('Failed to set current song. Please try again.');
     }
 }
 
