@@ -4,517 +4,459 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sri Sai Durga Stationary</title>
+    <link rel="icon" href="https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/17408692-1184-4b97-9806-3f412a859fc2.webp" type="image/x-icon">
     <style>
-        :root {
-            --primary-color: #008080;
-            --secondary-color: #FFD700;
-            --accent-color: #F0F8FF;
-            --text-color: #333;
-            --background-color: #FFFFFF;
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: Arial, sans-serif;
         }
 
         body {
-            font-family: 'Arial', sans-serif;
-            line-height: 1.6;
-            color: var(--text-color);
-            background-color: var(--background-color);
+            background-image: url('https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/Subtle-Clouds-Texture-Pattern.jpg');
+            background-size: cover;
+            background-attachment: fixed;
         }
 
         header {
-            background-color: var(--primary-color);
-            color: var(--background-color);
-            padding: 1rem;
-        }
-
-        nav {
+            background-color: #008080;
+            padding: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
         }
 
         .logo {
-            display: flex;
-            align-items: center;
-        }
-
-        .logo img {
             width: 50px;
             height: 50px;
-            margin-right: 1rem;
-        }
-
-        .search-bar {
-            display: flex;
-            align-items: center;
-        }
-
-        .search-bar input {
-            padding: 0.5rem;
-            border: none;
-            border-radius: 4px 0 0 4px;
-        }
-
-        .search-bar button {
-            background-color: var(--secondary-color);
-            border: none;
-            padding: 0.5rem;
-            border-radius: 0 4px 4px 0;
             cursor: pointer;
         }
 
-        nav ul {
+        .category-buttons {
             display: flex;
-            list-style: none;
+            gap: 10px;
         }
 
-        nav ul li {
-            margin-left: 1rem;
-        }
-
-        nav ul li a {
-            color: var(--background-color);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        nav ul li a:hover {
-            color: var(--secondary-color);
-        }
-
-        #hero {
-            background-image: url('https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/a_hyderabad_themed_banner_e_g_charminar_stationery_items.jpeg');
-            background-size: cover;
-            background-position: center;
-            height: 400px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            color: var(--background-color);
-        }
-
-        .cta {
-            background-color: var(--secondary-color);
-            color: var(--text-color);
-            padding: 0.75rem 1.5rem;
+        .category-btn {
+            background-color: #f0f0f0;
             border: none;
-            border-radius: 4px;
-            font-size: 1.1rem;
+            padding: 5px 15px;
+            border-radius: 20px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s;
         }
 
-        .cta:hover {
-            background-color: #FFE55C;
+        .category-btn:hover, .category-btn.active {
+            background-color: #ffd700;
         }
 
-        #products {
-            display: flex;
-            padding: 2rem;
-        }
-
-        .category-sidebar {
-            width: 200px;
-            margin-right: 2rem;
-        }
-
-        .category-sidebar ul {
-            list-style: none;
-        }
-
-        .category-sidebar ul li {
-            margin-bottom: 0.5rem;
-        }
-
-        .category-sidebar ul li a {
-            color: var(--text-color);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .category-sidebar ul li a:hover {
-            color: var(--primary-color);
+        main {
+            margin-top: 70px;
+            padding: 20px;
         }
 
         .product-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
         }
 
         .product-card {
-            background-color: var(--accent-color);
-            border-radius: 8px;
-            overflow: hidden;
-            transition: transform 0.3s ease;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            transition: transform 0.3s;
         }
 
         .product-card:hover {
             transform: translateY(-5px);
         }
 
-        .product-card img {
+        .product-image {
             width: 100%;
-            height: 200px;
+            height: 150px;
             object-fit: cover;
+            border-radius: 5px;
         }
 
-        .product-info {
-            padding: 1rem;
-        }
-
-        .product-info h3 {
-            margin-bottom: 0.5rem;
-        }
-
-        .product-info p {
-            margin-bottom: 1rem;
-        }
-
-        .product-info .price {
+        .product-name {
             font-weight: bold;
-            color: var(--primary-color);
+            margin-top: 10px;
+        }
+
+        .product-description {
+            font-size: 0.9em;
+            color: #666;
+            margin: 5px 0;
+        }
+
+        .product-price {
+            font-weight: bold;
+            color: #008080;
         }
 
         .add-to-cart {
-            background-color: var(--primary-color);
-            color: var(--background-color);
+            background-color: #ffd700;
             border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
+            padding: 5px 10px;
+            border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            margin-top: 5px;
+            transition: background-color 0.3s;
         }
 
         .add-to-cart:hover {
-            background-color: #006666;
+            background-color: #ffcc00;
         }
 
-        #about, #contact {
-            padding: 2rem;
-            max-width: 800px;
-            margin: 0 auto;
+        .slide-menu {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 300px;
+            height: 100%;
+            background-color: #ffffff;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            transition: left 0.3s;
+            z-index: 2000;
+            padding: 20px;
         }
 
-        #contact-form {
-            display: flex;
-            flex-direction: column;
+        .slide-menu.open {
+            left: 0;
         }
 
-        #contact-form input, #contact-form textarea {
-            margin-bottom: 1rem;
-            padding: 0.5rem;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        #contact-form button {
-            background-color: var(--primary-color);
-            color: var(--background-color);
-            border: none;
-            padding: 0.75rem;
-            border-radius: 4px;
+        .close-menu {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
         }
 
-        #contact-form button:hover {
-            background-color: #006666;
+        .profile-section {
+            margin-top: 40px;
         }
 
-        footer {
-            background-color: var(--primary-color);
-            color: var(--background-color);
-            padding: 2rem;
+        .profile-photo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+            margin: 0 auto 20px;
         }
 
-        .footer-content {
+        .profile-input {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #008080;
             display: flex;
-            justify-content: space-between;
-            max-width: 1200px;
-            margin: 0 auto;
+            justify-content: space-around;
+            padding: 10px;
         }
 
-        .social-links a {
-            color: var(--background-color);
-            font-size: 1.5rem;
-            margin-right: 1rem;
-            transition: color 0.3s ease;
+        .nav-icon {
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
         }
 
-        .social-links a:hover {
-            color: var(--secondary-color);
+        .support-btn {
+            position: fixed;
+            bottom: 70px;
+            right: 20px;
+            background-color: #ffd700;
+            border: none;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .support-icon {
+            width: 30px;
+            height: 30px;
+        }
+
+        .support-form {
+            display: none;
+            position: fixed;
+            bottom: 120px;
+            right: 20px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .support-form input, .support-form textarea {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+
+        .support-form button {
+            background-color: #008080;
+            color: #ffffff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
         }
 
         .easter-egg {
-            text-align: center;
-            margin-top: 1rem;
-            font-style: italic;
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            font-size: 12px;
+            color: #666;
         }
 
         .charminar-icon {
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
             cursor: pointer;
         }
 
         @media (max-width: 768px) {
-            nav {
-                flex-direction: column;
+            .category-buttons {
+                display: none;
             }
 
-            nav ul {
-                margin-top: 1rem;
-            }
-
-            #products {
-                flex-direction: column;
-            }
-
-            .category-sidebar {
-                width: 100%;
-                margin-bottom: 1rem;
-            }
-
-            .footer-content {
-                flex-direction: column;
-            }
-
-            .social-links {
-                margin-top: 1rem;
+            .product-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             }
         }
     </style>
 </head>
 <body>
     <header>
-        <nav>
-            <div class="logo">
-                <img src="https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/a_hyderabad_themed_banner_e_g_charminar_stationery_items.jpeg" alt="Sri Sai Durga Stationary Logo">
-                <h1>Sri Sai Durga Stationary</h1>
-            </div>
-            <div class="search-bar">
-                <input type="text" placeholder="Search for products...">
-                <button>🔍</button>
-            </div>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#products">Products</a></li>
-                <li><a href="#about">About Us</a></li>
-                <li><a href="#contact">Contact Us</a></li>
-            </ul>
-        </nav>
+        <img src="https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/17408692-1184-4b97-9806-3f412a859fc2.webp" alt="Logo" class="logo" id="logo">
+        <div class="category-buttons">
+            <button class="category-btn active" data-category="all">All</button>
+            <button class="category-btn" data-category="pens">Pens</button>
+            <button class="category-btn" data-category="notebooks">Notebooks</button>
+            <button class="category-btn" data-category="art">Art Supplies</button>
+            <button class="category-btn" data-category="office">Office Supplies</button>
+        </div>
     </header>
 
     <main>
-        <section id="hero">
-            <h2>Welcome to Sri Sai Durga Stationary</h2>
-            <p>Your one-stop shop for all stationery needs in Hyderabad!</p>
-            <button class="cta">Start Shopping</button>
-        </section>
-
-        <section id="products">
-            <div class="category-sidebar">
-                <h3>Categories</h3>
-                <ul>
-                    <li><a href="#" data-category="all">All Products</a></li>
-                    <li><a href="#" data-category="notebooks">Notebooks</a></li>
-                    <li><a href="#" data-category="pens">Pens</a></li>
-                    <li><a href="#" data-category="art">Art Supplies</a></li>
-                    <li><a href="#" data-category="files">Files & Folders</a></li>
-                    <li><a href="#" data-category="office">Office Supplies</a></li>
-                </ul>
-            </div>
-            <div class="product-grid">
-                <!-- Product cards will be dynamically added here -->
-            </div>
-        </section>
-
-        <section id="about">
-            <h2>About Us</h2>
-            <p>Sri Sai Durga Stationary has been serving the vibrant city of Hyderabad for over two decades. We take pride in offering high-quality stationery products to students, professionals, and art enthusiasts alike.</p>
-        </section>
-
-        <section id="contact">
-            <h2>Contact Us</h2>
-            <form id="contact-form">
-                <input type="text" placeholder="Your Name" required>
-                <input type="email" placeholder="Your Email" required>
-                <textarea placeholder="Your Message" required></textarea>
-                <button type="submit">Send Message</button>
-            </form>
-        </section>
+        <div class="product-grid" id="productGrid"></div>
     </main>
 
-    <footer>
-        <div class="footer-content">
-            <div class="address">
-                <h3>Visit Us</h3>
-                <p>123 Stationery Street, Hyderabad, Telangana 500001</p>
-            </div>
-            <div class="social-links">
-                <h3>Follow Us</h3>
-                <a href="#" target="_blank">📘</a>
-                <a href="#" target="_blank">📷</a>
-                <a href="#" target="_blank">🐦</a>
-            </div>
+    <div class="slide-menu" id="slideMenu">
+        <span class="close-menu" id="closeMenu">&times;</span>
+        <div class="profile-section">
+            <img src="https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/av3408bf9a8e4c42e82ae.png" alt="Profile Photo" class="profile-photo" id="profilePhoto">
+            <input type="file" id="photoUpload" style="display: none;">
+            <input type="text" class="profile-input" id="phoneInput" placeholder="Phone Number">
+            <input type="email" class="profile-input" id="emailInput" placeholder="Email">
         </div>
-        <div class="easter-egg">
-            <p>Proudly serving Hyderabad, the land of biryani! <span class="charminar-icon">🕌</span></p>
-        </div>
-    </footer>
+    </div>
+
+    <nav class="bottom-nav">
+        <img src="https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/home-vector-icon.jpg" alt="Home" class="nav-icon" id="homeIcon">
+        <img src="https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/printer-icon-transparent-background-free-png.png" alt="Print" class="nav-icon" id="printIcon">
+        <img src="https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/menu-icon-svg-23.png" alt="Menu" class="nav-icon" id="menuIcon">
+        <img src="https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/491017.png" alt="History" class="nav-icon" id="historyIcon">
+        <img src="https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/shopping-cart-icon-shopping-basket-on-transparent-background-free-png.png" alt="Cart" class="nav-icon" id="cartIcon">
+    </nav>
+
+    <button class="support-btn" id="supportBtn">
+        <img src="https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/Support-PNG-Picture.png" alt="Support" class="support-icon">
+    </button>
+
+    <div class="support-form" id="supportForm">
+        <input type="text" placeholder="Name" id="supportName">
+        <input type="email" placeholder="Email" id="supportEmail">
+        <textarea placeholder="Message" id="supportMessage"></textarea>
+        <button id="sendSupportMsg">Send</button>
+    </div>
+
+    <div class="easter-egg">
+        <img src="https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/pngtree-aesthetic-hand-painted-urban-architectural-png-elements-png-image_7382050.png" alt="Charminar" class="charminar-icon" id="charminarIcon">
+        Proudly serving Hyderabad – The Land of Biryani!
+    </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const productGrid = document.querySelector('.product-grid');
-            const categoryLinks = document.querySelectorAll('.category-sidebar a');
-            const searchInput = document.querySelector('.search-bar input');
-            const searchButton = document.querySelector('.search-bar button');
-            const charmimarIcon = document.querySelector('.charminar-icon');
+        const products = [
+            {
+                name: "Notebook - Spiral Bound",
+                description: "200 pages, A4 size, durable cover",
+                price: 120,
+                image: "https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/fddc79ee-7b83-49b2-8699-75fa60c97bd0._CB316418626_.jpg",
+                category: "notebooks"
+            },
+            {
+                name: "Ball Pen - Pack of 10",
+                description: "Smooth writing, assorted colors",
+                price: 90,
+                image: "https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/bun047.jpg",
+                category: "pens"
+            },
+            {
+                name: "Acrylic Paint Set",
+                description: "12 vibrant colors, non-toxic",
+                price: 350,
+                image: "https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/4b3d34b5-cd4a-4d6e-b345-98f7f781540a.8075b9bcf3212df9df5b75f12ba3c28c.jpeg",
+                category: "art"
+            },
+            {
+                name: "File Organizer",
+                description: "Waterproof, holds up to 300 pages",
+                price: 250,
+                image: "https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/1272f30b-39e3-4232-9faf-79d5dd354254.a825c345c8d1f8433d09c472d3db6b89.jpeg",
+                category: "office"
+            },
+            {
+                name: "Geometry Box",
+                description: "Complete set with compass and protractor",
+                price: 180,
+                image: "https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/Classmate-1-1068x812.webp",
+                category: "office"
+            },
+            {
+                name: "Sketch Pens - Set of 12",
+                description: "Vibrant colors, fine tip",
+                price: 120,
+                image: "https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/th%20(1).jpeg",
+                category: "art"
+            },
+            {
+                name: "Sticky Notes - Assorted",
+                description: "Pack of 5, different sizes",
+                price: 150,
+                image: "https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/71ZR1BSOlTL._AC_SL1500_.jpg",
+                category: "office"
+            },
+            {
+                name: "Whiteboard Markers",
+                description: "Set of 4, quick-dry ink",
+                price: 200,
+                image: "https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/80678.jpg",
+                category: "pens"
+            },
+            {
+                name: "Office Scissors",
+                description: "Stainless steel, comfortable grip",
+                price: 100,
+                image: "https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/71M3gNZJCNL.jpg",
+                category: "office"
+            },
+            {
+                name: "Highlighters - Pack of 5",
+                description: "Fluorescent colors, chisel tip",
+                price: 150,
+                image: "https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/21aaccd3-fb6a-4950-83db-53936b9fae07_1.e5a411ebf49cad87f98a8c3c550a35d1.jpeg",
+                category: "pens"
+            }
+        ];
 
-            const products = [
-                {
-                    name: "Spiral Notebook",
-                    description: "200 pages, A4 size, durable cover",
-                    price: 120,
-                    image: "https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/fddc79ee-7b83-49b2-8699-75fa60c97bd0._CB316418626_.jpg",
-                    category: "notebooks"
-                },
-                {
-                    name: "Acrylic Paint Set",
-                    description: "12 vibrant colors, non-toxic",
-                    price: 350,
-                    image: "https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/4b3d34b5-cd4a-4d6e-b345-98f7f781540a.8075b9bcf3212df9df5b75f12ba3c28c.jpeg",
-                    category: "art"
-                },
-                {
-                    name: "File Organizer",
-                    description: "Waterproof, holds up to 300 pages",
-                    price: 250,
-                    image: "https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/1272f30b-39e3-4232-9faf-79d5dd354254.a825c345c8d1f8433d09c472d3db6b89.jpeg",
-                    category: "files"
-                },
-                {
-                    name: "Geometry Box",
-                    description: "Complete set with compass and protractor",
-                    price: 180,
-                    image: "https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/Classmate-1-1068x812.webp",
-                    category: "office"
-                },
-                {
-                    name: "Sketch Pens",
-                    description: "Set of 12, vibrant colors",
-                    price: 80,
-                    image: "https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/th%20(1).jpeg",
-                    category: "art"
-                },
-                {
-                    name: "Sticky Notes",
-                    description: "Pack of 5, assorted colors",
-                    price: 60,
-                    image: "https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/71ZR1BSOlTL._AC_SL1500_.jpg",
-                    category: "office"
-                },
-                {
-                    name: "Whiteboard Markers",
-                    description: "Set of 4, quick-drying",
-                    price: 100,
-                    image: "https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/80678.jpg",
-                    category: "office"
-                },
-                {
-                    name: "Office Scissors",
-                    description: "Stainless steel, comfortable grip",
-                    price: 70,
-                    image: "https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/71M3gNZJCNL.jpg",
-                    category: "office"
-                },
-                {
-                    name: "Ball Pen Set",
-                    description: "Pack of 10, smooth writing",
-                    price: 90,
-                    image: "https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/bun047.jpg",
-                    category: "pens"
-                },
-                {
-                    name: "Highlighters",
-                    description: "Set of 5, fluorescent colors",
-                    price: 110,
-                    image: "https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/21aaccd3-fb6a-4950-83db-53936b9fae07_1.e5a411ebf49cad87f98a8c3c550a35d1.jpeg",
-                    category: "office"
-                }
-            ];
+        function displayProducts(category = 'all') {
+            const productGrid = document.getElementById('productGrid');
+            productGrid.innerHTML = '';
 
-            function createProductCard(product) {
-                const card = document.createElement('div');
-                card.classList.add('product-card');
-                card.innerHTML = `
-                    <img src="${product.image}" alt="${product.name}">
-                    <div class="product-info">
-                        <h3>${product.name}</h3>
-                        <p>${product.description}</p>
-                        <p class="price">₹${product.price}</p>
+            products.forEach(product => {
+                if (category === 'all' || product.category === category) {
+                    const productCard = document.createElement('div');
+                    productCard.className = 'product-card';
+                    productCard.innerHTML = `
+                        <img src="${product.image}" alt="${product.name}" class="product-image">
+                        <div class="product-name">${product.name}</div>
+                        <div class="product-description">${product.description}</div>
+                        <div class="product-price">₹${product.price}</div>
                         <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                `;
-                return card;
-            }
-
-            function displayProducts(productsToShow) {
-                productGrid.innerHTML = '';
-                productsToShow.forEach(product => {
-                    productGrid.appendChild(createProductCard(product));
-                });
-            }
-
-            function filterProducts(category) {
-                if (category === 'all') {
-                    displayProducts(products);
-                } else {
-                    const filteredProducts = products.filter(product => product.category === category);
-                    displayProducts(filteredProducts);
-                }
-            }
-
-            categoryLinks.forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const category = e.target.getAttribute('data-category');
-                    filterProducts(category);
-                });
-            });
-
-            function searchProducts(query) {
-                const filteredProducts = products.filter(product => 
-                    product.name.toLowerCase().includes(query.toLowerCase()) ||
-                    product.description.toLowerCase().includes(query.toLowerCase())
-                );
-                displayProducts(filteredProducts);
-            }
-
-            searchButton.addEventListener('click', () => {
-                searchProducts(searchInput.value);
-            });
-
-            searchInput.addEventListener('keyup', (e) => {
-                if (e.key === 'Enter') {
-                    searchProducts(searchInput.value);
+                    `;
+                    productGrid.appendChild(productCard);
                 }
             });
+        }
 
-            charmimarIcon.addEventListener('click', () => {
-                alert('Jai Hyderabad! Get a special 10% discount on your next purchase!');
+        displayProducts();
+
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        categoryButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                categoryButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                displayProducts(button.dataset.category);
             });
+        });
 
-            // Initial display of all products
-            displayProducts(products);
+        const logo = document.getElementById('logo');
+        const slideMenu = document.getElementById('slideMenu');
+        const closeMenu = document.getElementById('closeMenu');
+
+        logo.addEventListener('click', () => {
+            slideMenu.classList.add('open');
+        });
+
+        closeMenu.addEventListener('click', () => {
+            slideMenu.classList.remove('open');
+        });
+
+        const profilePhoto = document.getElementById('profilePhoto');
+        const photoUpload = document.getElementById('photoUpload');
+
+        profilePhoto.addEventListener('click', () => {
+            photoUpload.click();
+        });
+
+        photoUpload.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    profilePhoto.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        const supportBtn = document.getElementById('supportBtn');
+        const supportForm = document.getElementById('supportForm');
+        const sendSupportMsg = document.getElementById('sendSupportMsg');
+
+        supportBtn.addEventListener('click', () => {
+            supportForm.style.display = supportForm.style.display === 'none' ? 'block' : 'none';
+        });
+
+        sendSupportMsg.addEventListener('click', () => {
+            const name = document.getElementById('supportName').value;
+            const email = document.getElementById('supportEmail').value;
+            const message = document.getElementById('supportMessage').value;
+            alert(`Thank you, ${name}! Your message has been sent. We'll get back to you at ${email} soon.`);
+            supportForm.style.display = 'none';
+        });
+
+        const charminarIcon = document.getElementById('charminarIcon');
+        charminarIcon.addEventListener('click', () => {
+            alert('Dum hai toh order karo!');
+        });
+
+        const navIcons = document.querySelectorAll('.nav-icon');
+        navIcons.forEach(icon => {
+            icon.addEventListener('mouseover', () => {
+                const label = icon.getAttribute('alt');
+                icon.setAttribute('title', label);
+            });
         });
     </script>
 </body>
-</html>
-
+        </html>
