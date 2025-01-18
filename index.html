@@ -1,5 +1,587 @@
-<html>
-  <body>
-    <h1>website has been closed</h1>
-  </body>
-</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sri Sai Durga Stationary</title>
+    <link rel="icon" href="https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/17408692-1184-4b97-9806-3f412a859fc2.webp" type="image/x-icon">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-image: url('https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/Subtle-Clouds-Texture-Pattern.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+        }
+
+        header {
+            background-color: #008080;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+        }
+
+        .category-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .category-btn {
+            background-color: #f0f0f0;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .category-btn:hover, .category-btn.active {
+            background-color: #ffd700;
+        }
+
+        main {
+            margin-top: 70px;
+            padding: 20px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .product-name {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .product-description {
+            font-size: 0.9em;
+            color: #666;
+            margin: 5px 0;
+        }
+
+        .product-price {
+            font-weight: bold;
+            color: #008080;
+        }
+
+        .add-to-cart {
+            background-color: #ffd700;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .add-to-cart:hover {
+            background-color: #ffcc00;
+        }
+
+        .slide-menu {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 300px;
+            height: 100%;
+            background-color: #ffffff;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            transition: left 0.3s;
+            z-index: 2000;
+            padding: 20px;
+        }
+
+        .slide-menu.open {
+            left: 0;
+        }
+
+        .close-menu {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .profile-section {
+            margin-top: 40px;
+        }
+
+        .profile-photo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+            margin: 0 auto 20px;
+        }
+
+        .profile-input {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #008080;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px;
+        }
+
+        .nav-icon {
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+        }
+
+        .support-btn {
+            position: fixed;
+            bottom: 70px;
+            right: 20px;
+            background-color: #ffd700;
+            border: none;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .support-icon {
+            width: 30px;
+            height: 30px;
+        }
+
+        .support-form {
+            display: none;
+            position: fixed;
+            bottom: 120px;
+            right: 20px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .support-form input, .support-form textarea {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+
+        .support-form button {
+            background-color: #008080;
+            color: #ffffff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .easter-egg {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .charminar-icon {
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
+            cursor: pointer;
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #ff0000;
+            color: #ffffff;
+            border-radius: 50%;
+            padding: 2px 5px;
+            font-size: 12px;
+        }
+
+        .cart-page {
+            display: none;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-top: 70px;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .cart-item img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+
+        .cart-item-details {
+            flex-grow: 1;
+        }
+
+        .cart-item-quantity {
+            display: flex;
+            align-items: center;
+            margin-top: 5px;
+        }
+
+        .cart-item-quantity button {
+            background-color: #f0f0f0;
+            border: none;
+            padding: 2px 5px;
+            cursor: pointer;
+        }
+
+        .cart-summary {
+            margin-top: 20px;
+            text-align: right;
+        }
+
+        .order-now {
+            background-color: #cccccc;
+            color: #666666;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: not-allowed;
+            margin-top: 10px;
+        }
+
+        .order-now:hover::after {
+            content: "This feature will be enabled soon";
+            position: absolute;
+            background-color: #333;
+            color: #fff;
+            padding: 5px;
+            border-radius: 3px;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        @media (max-width: 768px) {
+            .category-buttons {
+                display: none;
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/17408692-1184-4b97-9806-3f412a859fc2.webp" alt="Logo" class="logo" id="logo">
+        <div class="category-buttons">
+            <button class="category-btn active" data-category="all">All</button>
+            <button class="category-btn" data-category="pens">Pens</button>
+            <button class="category-btn" data-category="notebooks">Notebooks</button>
+            <button class="category-btn" data-category="art">Art Supplies</button>
+            <button class="category-btn" data-category="office">Office Supplies</button>
+        </div>
+    </header>
+
+    <main>
+        <div class="product-grid" id="productGrid"></div>
+        <div class="cart-page" id="cartPage">
+            <h2>Your Cart</h2>
+            <div id="cartItems"></div>
+            <div class="cart-summary">
+                <div>Subtotal: ₹<span id="subtotal">0</span></div>
+                <div>Taxes (5%): ₹<span id="taxes">0</span></div>
+                <div>Total: ₹<span id="total">0</span></div>
+                <button class="order-now" disabled>Order Now</button>
+            </div>
+        </div>
+    </main>
+
+    <div class="slide-menu" id="slideMenu">
+        <span class="close-menu" id="closeMenu">&times;</span>
+        <div class="profile-section">
+            <img src="https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/av3408bf9a8e4c42e82ae.png" alt="Profile Photo" class="profile-photo" id="profilePhoto">
+            <input type="file" id="photoUpload" style="display: none;">
+            <input type="text" class="profile-input" id="phoneInput" placeholder="Phone Number">
+            <input type="email" class="profile-input" id="emailInput" placeholder="Email">
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <img src="https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/home-vector-icon.jpg" alt="Home" class="nav-icon" id="homeIcon">
+        <img src="https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/printer-icon-transparent-background-free-png.png" alt="Print" class="nav-icon" id="printIcon">
+        <img src="https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/menu-icon-svg-23.png" alt="Menu" class="nav-icon" id="menuIcon">
+        <img src="https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/491017.png" alt="History" class="nav-icon" id="historyIcon">
+        <div style="position: relative;">
+            <img src="https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/shopping-cart-icon-shopping-basket-on-transparent-background-free-png.png" alt="Cart" class="nav-icon" id="cartIcon">
+            <span class="cart-badge" id="cartBadge">0</span>
+        </div>
+    </nav>
+
+    <button class="support-btn" id="supportBtn">
+        <img src="https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/Support-PNG-Picture.png" alt="Support" class="support-icon">
+    </button>
+
+    <div class="support-form" id="supportForm">
+        <input type="text" placeholder="Name" id="supportName">
+        <input type="email" placeholder="Email" id="supportEmail">
+        <textarea placeholder="Message" id="supportMessage"></textarea>
+        <button id="sendSupportMsg">Send</button>
+    </div>
+
+    <div class="easter-egg">
+        <img src="https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/pngtree-aesthetic-hand-painted-urban-architectural-png-elements-png-image_7382050.png" alt="Charminar" class="charminar-icon" id="charminarIcon">
+        Proudly serving Hyderabad – The Land of Biryani!
+    </div>
+
+    <script>
+        const products = [
+            {
+                id: 1,
+                name: "Notebook - Spiral Bound",
+                description: "200 pages, A4 size, durable cover",
+                price: 120,
+                image: "https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/fddc79ee-7b83-49b2-8699-75fa60c97bd0._CB316418626_.jpg",
+                category: "notebooks"
+            },
+            {
+                id: 2,
+                name: "Ball Pen - Pack of 10",
+                description: "Smooth writing, assorted colors",
+                price: 90,
+                image: "https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/bun047.jpg",
+                category: "pens"
+            },
+            {
+                id: 3,
+                name: "Acrylic Paint Set",
+                description: "12 vibrant colors, non-toxic",
+                price: 350,
+                image: "https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/4b3d34b5-cd4a-4d6e-b345-98f7f781540a.8075b9bcf3212df9df5b75f12ba3c28c.jpeg",
+                category: "art"
+            },
+            {
+                id: 4,
+                name: "File Organizer",
+                description: "Waterproof, holds up to 300 pages",
+                price: 250,
+                image: "https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/1272f30b-39e3-4232-9faf-79d5dd354254.a825c345c8d1f8433d09c472d3db6b89.jpeg",
+                category: "office"
+            },
+            {
+                id: 5,
+                name: "Geometry Box",
+                description: "Complete set with compass and protractor",
+                price: 180,
+                image: "https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/Classmate-1-1068x812.webp",
+                category: "office"
+            },
+            {
+                id: 6,
+                name: "Sketch Pens - Set of 12",
+                description: "Vibrant colors, fine tip",
+                price: 120,
+                image: "https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/th%20(1).jpeg",
+                category: "art"
+            },
+            {
+                id: 7,
+                name: "Sticky Notes - Assorted",
+                description: "Pack of 5, different sizes",
+                price: 150,
+                image: "https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/71ZR1BSOlTL._AC_SL1500_.jpg",
+                category: "office"
+            },
+            {
+                id: 8,
+                name: "Whiteboard Markers",
+                description: "Set of 4, quick-dry ink",
+                price: 200,
+                image: "https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/80678.jpg",
+                category: "pens"
+            },
+            {
+                id: 9,
+                name: "Office Scissors",
+                description: "Stainless steel, comfortable grip",
+                price: 100,
+                image: "https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/71M3gNZJCNL.jpg",
+                category: "office"
+            },
+            {
+                id: 10,
+                name: "Highlighters - Pack of 5",
+                description: "Fluorescent colors, chisel tip",
+                price: 150,
+                image: "https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/21aaccd3-fb6a-4950-83db-53936b9fae07_1.e5a411ebf49cad87f98a8c3c550a35d1.jpeg",
+                category: "pens"
+            }
+        ];
+
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        function displayProducts(category = 'all') {
+            const productGrid = document.getElementById('productGrid');
+            productGrid.innerHTML = '';
+
+            products.forEach(product => {
+                if (category === 'all' || product.category === category) {
+                    const productCard = document.createElement('div');
+                    productCard.className = 'product-card';
+                    productCard.innerHTML = `
+                        <img src="${product.image}" alt="${product.name}" class="product-image">
+                        <div class="product-name">${product.name}</div>
+                        <div class="product-description">${product.description}</div>
+                        <div class="product-price">₹${product.price}</div>
+                        <button class="add-to-cart" data-id="${product.id}">Add to Cart</button>
+                    `;
+                    productGrid.appendChild(productCard);
+                }
+            });
+
+            attachAddToCartListeners();
+        }
+
+        function attachAddToCartListeners() {
+            const addToCartButtons = document.querySelectorAll('.add-to-cart');
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const productId = parseInt(button.dataset.id);
+                    addToCart(productId);
+                    updateCartBadge();
+                    showNotification('Item added to cart!');
+                });
+            });
+        }
+
+        function addToCart(productId) {
+            const existingItem = cart.find(item => item.id === productId);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                const product = products.find(p => p.id === productId);
+                cart.push({ ...product, quantity: 1 });
+            }
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        function updateCartBadge() {
+            const cartBadge = document.getElementById('cartBadge');
+            const itemCount = cart.reduce((total, item) => total + item.quantity, 0);
+            cartBadge.textContent = itemCount;
+        }
+
+        function showNotification(message) {
+            alert(message); // For simplicity, using an alert. You can replace this with a custom notification.
+        }
+
+        function displayCart() {
+            const cartItems = document.getElementById('cartItems');
+            cartItems.innerHTML = '';
+
+            cart.forEach(item => {
+                const cartItem = document.createElement('div');
+                cartItem.className = 'cart-item';
+                cartItem.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}">
+                    <div class="cart-item-details">
+                        <div>${item.name}</div>
+                        <div>₹${item.price}</div>
+                        <div class="cart-item-quantity">
+                            <button onclick="updateQuantity(${item.id}, -1)">-</button>
+                            <span>${item.quantity}</span>
+                            <button onclick="updateQuantity(${item.id}, 1)">+</button>
+                        </div>
+                    </div>
+                    <button onclick="removeFromCart(${item.id})">Remove</button>
+                `;
+                cartItems.appendChild(cartItem);
+            });
+
+            updateCartSummary();
+        }
+
+        function updateQuantity(productId, change) {
+            const item = cart.find(item => item.id === productId);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) {
+                    removeFromCart(productId);
+                } else {
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    displayCart();
+                    updateCartBadge();
+                }
+            }
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            displayCart();
+            updateCartBadge();
+        }
+
+        function updateCartSummary() {
+            const subtotal = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+            const taxes = subtotal * 0.05;
+            const total = subtotal + taxes;
+
+            document.getElementById('subtotal').textContent = subtotal.toFixed(2);
+            document.getElementById('taxes').textContent = taxes.toFixed(2);
+            document.getElementById('total').textContent = total.toFixed(2);
+        }
+
+        displayProducts(
