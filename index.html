@@ -3,73 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sri Sai Durga Stationary</title>
-    <link rel="icon" href="https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/17408692-1184-4b97-9806-3f412a859fc2.webp" type="image/x-icon">
-    <link rel="stylesheet" href="styles.css">
+    <title>WhatsApp Message Button</title>
+    <script>
+        // This function copies the predefined message to the clipboard
+        function copyToClipboard() {
+            const message = "Hello! I'd like to learn more about your product.";
+            navigator.clipboard.writeText(message).then(() => {
+                alert("Message copied to clipboard!");
+            });
+        }
+
+        // This function redirects the user to WhatsApp with the message
+        function sendMessage() {
+            const phone = "9030390877"; // Replace with your WhatsApp number
+            const message = "Hello! I'd like to learn more about your product.";
+            window.location.href = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+        }
+    </script>
 </head>
 <body>
-    <header>
-        <img src="https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/17408692-1184-4b97-9806-3f412a859fc2.webp" alt="Logo" class="logo" id="logo">
-        <div class="category-buttons">
-            <button class="category-btn active" data-category="all">All</button>
-            <button class="category-btn" data-category="pens">Pens</button>
-            <button class="category-btn" data-category="notebooks">Notebooks</button>
-            <button class="category-btn" data-category="art">Art Supplies</button>
-            <button class="category-btn" data-category="office">Office Supplies</button>
-        </div>
-    </header>
-
-    <main>
-        <div class="product-grid" id="productGrid"></div>
-        <div class="cart-page" id="cartPage">
-            <h2>Your Cart</h2>
-            <div id="cartItems"></div>
-            <div class="cart-summary">
-                <div>Subtotal: ₹<span id="subtotal">0</span></div>
-                <div>Taxes (5%): ₹<span id="taxes">0</span></div>
-                <div>Total: ₹<span id="total">0</span></div>
-                <button class="order-now" disabled>Order Now</button>
-            </div>
-        </div>
-    </main>
-
-    <div class="slide-menu" id="slideMenu">
-        <span class="close-menu" id="closeMenu">&times;</span>
-        <div class="profile-section">
-            <img src="https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/av3408bf9a8e4c42e82ae.png" alt="Profile Photo" class="profile-photo" id="profilePhoto">
-            <input type="file" id="photoUpload" style="display: none;">
-            <input type="text" class="profile-input" id="phoneInput" placeholder="Phone Number">
-            <input type="email" class="profile-input" id="emailInput" placeholder="Email">
-        </div>
-    </div>
-
-    <nav class="bottom-nav">
-        <img src="https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/home-vector-icon.jpg" alt="Home" class="nav-icon" id="homeIcon">
-        <img src="https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/printer-icon-transparent-background-free-png.png" alt="Print" class="nav-icon" id="printIcon">
-        <img src="https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/menu-icon-svg-23.png" alt="Menu" class="nav-icon" id="menuIcon">
-        <img src="https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/491017.png" alt="History" class="nav-icon" id="historyIcon">
-        <div style="position: relative;">
-            <img src="https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/shopping-cart-icon-shopping-basket-on-transparent-background-free-png.png" alt="Cart" class="nav-icon" id="cartIcon">
-            <span class="cart-badge" id="cartBadge">0</span>
-        </div>
-    </nav>
-
-    <button class="support-btn" id="supportBtn">
-        <img src="https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/Support-PNG-Picture.png" alt="Support" class="support-icon">
-    </button>
-
-    <div class="support-form" id="supportForm">
-        <input type="text" placeholder="Name" id="supportName">
-        <input type="email" placeholder="Email" id="supportEmail">
-        <textarea placeholder="Message" id="supportMessage"></textarea>
-        <button id="sendSupportMsg">Send</button>
-    </div>
-
-    <div class="easter-egg">
-        <img src="https://raw.githubusercontent.com/Googlesdiscord/Database/refs/heads/main/pngtree-aesthetic-hand-painted-urban-architectural-png-elements-png-image_7382050.png" alt="Charminar" class="charminar-icon" id="charminarIcon">
-        Proudly serving Hyderabad – The Land of Biryani!
-    </div>
-
-    <script src="script.js"></script>
+    <button onclick="copyToClipboard(); sendMessage();">Contact Us on WhatsApp</button>
 </body>
 </html>
