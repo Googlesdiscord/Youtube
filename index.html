@@ -3,25 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WhatsApp Message Button</title>
+    <title>Redirecting to WhatsApp</title>
     <script>
-        // This function copies the predefined message to the clipboard
-        function copyToClipboard() {
-            const message = "Hello! I'd like to learn more about your product.";
-            navigator.clipboard.writeText(message).then(() => {
-                alert("Message copied to clipboard!");
-            });
-        }
-
-        // This function redirects the user to WhatsApp with the message
-        function sendMessage() {
-            const phone = "9030390877"; // Replace with your WhatsApp number
-            const message = "Hello! I'd like to learn more about your product.";
-            window.location.href = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-        }
+        // Automatically redirect to WhatsApp on page load
+        window.onload = function() {
+            const phone = "6281221412"; // Replace with your WhatsApp number
+            const message = "Hi"; // The predefined message
+            const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+            window.location.href = url;
+        };
     </script>
 </head>
 <body>
-    <button onclick="copyToClipboard(); sendMessage();">Contact Us on WhatsApp</button>
+    <h1>Redirecting you to WhatsApp...</h1>
+    <p>If you are not redirected automatically, <a id="redirect-link">click here</a>.</p>
 </body>
 </html>
