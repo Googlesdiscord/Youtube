@@ -1,1 +1,1 @@
-trying to make a secrect chatting room 
+a website for testing my skills 😎
